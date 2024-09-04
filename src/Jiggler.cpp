@@ -14,8 +14,10 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 	// rotate mouse in circle for time
 	while (std::chrono::steady_clock::now() < endTime) {
 		// Check if a key has been pressed
-		if (_kbhit()) {
-			break; 
+		if (_getch()) {
+			std::cout << "Key pressed to stop application...\n";
+			_getch();
+			return;
 		}
 
 		currentTime = std::chrono::steady_clock::now();
@@ -28,7 +30,8 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 		std::this_thread::sleep_for(std::chrono::milliseconds(timeStep));
 	}
 
-	std::cout << "Key pressed to stop application...\n";
+	std::cout << "Application finished after " << time << " seconds.\n";
+	_getch();
 }
 
 void Jiggler::moveCursor(int rad) {
