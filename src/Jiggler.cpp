@@ -14,7 +14,7 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 	// rotate mouse in circle for time
 	while (std::chrono::steady_clock::now() < endTime) {
 		// Check if a key has been pressed
-		if (_getch()) {
+		if (_kbhit()) {
 			std::cout << "Key pressed to stop application...\n";
 			_getch();
 			return;
