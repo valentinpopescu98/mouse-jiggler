@@ -1,10 +1,5 @@
 #include "Jiggler.h"
 
-Jiggler::Jiggler() {
-	// get initial cursor position
-	WinAPI::getMousePos();
-}
-
 void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep, int rad) {
 	// get the current time
 	startTime = std::chrono::steady_clock::now();
@@ -13,17 +8,19 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 
 	// rotate mouse in circle for time
 	while (std::chrono::steady_clock::now() < endTime) {
-		// Check if a key has been pressed
+		currentTime = std::chrono::steady_clock::now();
+		elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+
+		// check if a key has been pressed
 		if (_kbhit()) {
 			std::cout << "Key pressed to stop application...\n";
-			_getch();
+			std::cout << "Application finished after " << elapsedTime << " seconds.\n";
+			_getch(); // consumes the already-detected keypress from _kbhit
+			_getch(); // waits for a new keypress
 			return;
 		}
 
-		currentTime = std::chrono::steady_clock::now();
-		//auto elapsed_ns = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count();
-		//std::cout << elapsed_ns << std::endl;
-
+		WinAPI::getCursorPos();
 		moveCursor(rad);
 
 		// to prevent the loop from running too fast, add a small sleep
@@ -37,12 +34,10 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 void Jiggler::moveCursor(int rad) {
 	double angle = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() / 1000.0;
 
-	// Calculate x and y based on the angle
-	WinAPI::mousePosX = static_cast<int>(WinAPI::mousePosX + rad * cos(angle));
-	WinAPI::mousePosY = static_cast<int>(WinAPI::mousePosY + rad * sin(angle));
+	// calculate x and y based on the angle
+	WinAPI::x = static_cast<int>(WinAPI::x + rad * cos(angle));
+	WinAPI::y = static_cast<int>(WinAPI::y + rad * sin(angle));
 
-	// Persist new cursor position to Windows
-	WinAPI::setMousePos(WinAPI::mousePosX, WinAPI::mousePosY);
-
-	//std::cout << "Mouse Position: (" << WinAPI::mousePosX << ", " << WinAPI::mousePosY << ")\n";
+	// persist new cursor position to Windows
+	WinAPI::setCursorPos(WinAPI::x, WinAPI::y);
 }

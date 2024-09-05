@@ -4,7 +4,7 @@
 int main() {
     unsigned long long timeSecs;
     unsigned long long timeStepMs;
-    int radLengthPix;
+    unsigned int radLengthPix;
 
     std::cout << "How much time should the application run (in seconds)? ";
     std::cin >> timeSecs;

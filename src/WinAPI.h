@@ -4,8 +4,8 @@
 
 class WinAPI {
 	public:
-		static void getMousePos();
-		static void setMousePos(int x, int y);
+		static void getCursorPos();
+		static void setCursorPos(int x, int y);
 
-		static int mousePosX, mousePosY;
+		static int x, y;
 };

@@ -8,7 +8,6 @@
 
 class Jiggler {
 	public:
-		Jiggler();
 		// time in seconds, time step in miliseconds, radius in pixels
 		void rotateCursor(unsigned long long time, unsigned long long timeStep, int rad); 
 	private:
@@ -16,4 +15,5 @@ class Jiggler {
 		void moveCursor(int rad);
 
 		std::chrono::steady_clock::time_point startTime, endTime, currentTime;
+		unsigned long long elapsedTime;
 };

@@ -1,21 +1,21 @@
 #include "WinAPI.h"
 
-int WinAPI::mousePosX;
-int WinAPI::mousePosY;
+int WinAPI::x;
+int WinAPI::y;
 
-void WinAPI::getMousePos() {
+void WinAPI::getCursorPos() {
 	POINT p;
 
 	if (GetCursorPos(&p)) {
-		mousePosX = p.x;
-		mousePosY = p.y;
+		x = p.x;
+		y = p.y;
 	} else {
-		std::cerr << "Failed to get mouse position.\n";
+		std::cerr << "Failed to get cursor position.\n";
 	}
 }
 
-void WinAPI::setMousePos(int x, int y) {
+void WinAPI::setCursorPos(int x, int y) {
 	if (!SetCursorPos(x, y)) {
-		std::cerr << "Failed to set mouse position.\n";
+		std::cerr << "Failed to set cursor position.\n";
 	}
 }
