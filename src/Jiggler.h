@@ -8,8 +8,8 @@
 
 class Jiggler {
 	public:
-		// time in seconds, time step in miliseconds, radius in pixels
-		void rotateCursor(unsigned long long time, unsigned long long timeStep, int rad); 
+		// time in seconds, time step in miliseconds, radius in pixels, mouse button to press
+		void rotateCursor(unsigned long long time, unsigned long long timeStep, int rad, MouseBtn mouseBtn);
 	private:
 		// radius in pixels
 		void moveCursor(int rad);

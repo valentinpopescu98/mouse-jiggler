@@ -1,6 +1,6 @@
 #include "Jiggler.h"
 
-void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep, int rad) {
+void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep, int rad, MouseBtn mouseBtn) {
 	// get the current time
 	startTime = std::chrono::steady_clock::now();
 	// get the end time by adding given seconds to the start time
@@ -22,6 +22,7 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 
 		WinAPI::getCursorPos();
 		moveCursor(rad);
+		WinAPI::mousePress(mouseBtn);
 
 		// to prevent the loop from running too fast, add a small sleep
 		std::this_thread::sleep_for(std::chrono::milliseconds(timeStep));
