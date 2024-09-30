@@ -6,17 +6,21 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 	// get the end time by adding given seconds to the start time
 	endTime = startTime + std::chrono::seconds(time);
 
+	// start global keyboard hook to enable user input while window is not focused
+	WinAPI::startKbHook();
+
 	// rotate mouse in circle for time
 	while (std::chrono::steady_clock::now() < endTime) {
 		currentTime = std::chrono::steady_clock::now();
 		elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
 
 		// check if a key has been pressed
-		if (_kbhit()) {
-			std::cout << "Key pressed to stop application...\n";
+		if (WinAPI::kbBtnPressed) {
+			std::cout << "Application is terminating...\n";
 			std::cout << "Application finished after " << elapsedTime << " seconds.\n";
-			_getch(); // consumes the already-detected keypress from _kbhit
-			_getch(); // waits for a new keypress
+
+			WinAPI::stopKbHook();
+			_getch(); // wait for a new keypress with the window focused (so the user can read the logs)
 			return;
 		}
 
@@ -29,16 +33,17 @@ void Jiggler::rotateCursor(unsigned long long time, unsigned long long timeStep,
 	}
 
 	std::cout << "Application finished after " << time << " seconds.\n";
-	_getch();
+	WinAPI::stopKbHook();
+	_getch(); // wait for a new keypress with the window focused (so the user can read the logs)
 }
 
 void Jiggler::moveCursor(int rad) {
 	double angle = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() / 1000.0;
 
 	// calculate x and y based on the angle
-	WinAPI::x = static_cast<int>(WinAPI::x + rad * cos(angle));
-	WinAPI::y = static_cast<int>(WinAPI::y + rad * sin(angle));
+	WinAPI::cursorX = static_cast<int>(WinAPI::cursorX + rad * cos(angle));
+	WinAPI::cursorY = static_cast<int>(WinAPI::cursorY + rad * sin(angle));
 
 	// persist new cursor position to Windows
-	WinAPI::setCursorPos(WinAPI::x, WinAPI::y);
+	WinAPI::setCursorPos(WinAPI::cursorX, WinAPI::cursorY);
 }

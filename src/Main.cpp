@@ -63,6 +63,7 @@ int main() {
     timeStepMs = showPromptTakeInput<unsigned long long>("How often should the cursor position update (in miliseconds)? ");
     radLengthPix = showPromptTakeInput<unsigned int>("How big should the radius of the circle around which the cursor will rotate (in pixels)? ");
     mouseBtn = getMouseBtn();
+    std::cout << "\n";
 
     Jiggler jiggler;
     jiggler.rotateCursor(timeSecs, timeStepMs, radLengthPix, mouseBtn);
